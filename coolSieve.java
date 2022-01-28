@@ -1,3 +1,6 @@
+// Skyler Bolton
+// Assignment 1
+
 import java.lang.Math;
 import java.lang.Thread;
 import java.util.*;
@@ -6,16 +9,17 @@ import java.util.concurrent.atomic.AtomicLong;
 
 class Global
 {
-	// Don't judge me.
     public static boolean sieve[] = new boolean[100000001];
     public static AtomicLong count = new AtomicLong(0);
 }
 
-// secondary Class
+// Structure of classes adapted from geeksforgeeks.org.
+// Original code by Mehak Narang.
+// https://www.geeksforgeeks.org/multithreading-in-java/
 class Thready extends Thread
 {
-	// Constructor. n specificies the power of ten that is being handled by this thread.
-	// For example, n = 3 would find primes stopning 10^2 through 10^3
+	// Constructor. n specificies the ceiling of this thread's range.
+    // Start is what element this thread starts from.
 	int n;
     int start;
 	CountDownLatch cd;
@@ -26,17 +30,15 @@ class Thready extends Thread
 		this.cd = cd;
     }
 
-	// This uses the sieve of Eratosthenes. Code is adapted from GeeksforGeeks.org.
+	// This uses the sieve of Eratosthenes. Code is adapted from geeksforgeeks.org.
 	// Original author is Amit Khandelwal.
 	// https://www.geeksforgeeks.org/sieve-of-eratosthenes/
 	public void run()
 	{
 		int max = 100000000;
 
-        int stop = this.n;
-		//System.out.println("\nstart: " + start + ", end: " + stop);
-
-        for (int p = this.start; p * p <= max; p++)
+        // Each thread checks only within the range it is given.
+        for (int p = this.start; (p * p <= max) && p <= this.n; p++)
         {
             if (Global.sieve[p] == true)
             {
@@ -56,11 +58,11 @@ class coolSieve
 	public static void main(String[] args)
 	{
         long sum = 0;
-		CountDownLatch cd = new CountDownLatch(8);
 		int max = 100000000;
 		int threads = 8;
 		int portion = max / 8;
         int count = 0;
+        CountDownLatch cd = new CountDownLatch(8);
         long startTime = System.currentTimeMillis();
 
         // Initialize the whole thing to true.
@@ -69,7 +71,8 @@ class coolSieve
             Global.sieve[i] = true;
 		}
 
-        //Spawn the threads and give them their portion of the array.
+        // Spawn the threads and give them their portion of the array.
+        // This is very ugly.
         Thready foopy = new Thready(100, 2, cd);
         foopy.start();
 
@@ -94,13 +97,14 @@ class coolSieve
         foopy = new Thready(100000000, 10000000, cd);
         foopy.start();
 
-        // Wait for threads
+        // Wait for threads to finish before doing anything with the array.
 		try {cd.await();
 		}
 		catch(InterruptedException e) {
 			e.printStackTrace();
 		}
-		// Print primes using sieve[]
+
+		// Print primes using sieve[], and track the sum
         for (int i = 2; i < max; i++)
         {
             if (Global.sieve[i])
@@ -125,8 +129,9 @@ class coolSieve
         long endTime = System.currentTimeMillis();
         long duration = (endTime - startTime);
         System.out.println(duration + "ms  " + count + " " + sum);
-        System.out.println(Arrays.toString(lastTen));
-
-		return;
+        for (int i : lastTen)
+        {
+            System.out.println(i);
+        }
 	}
 }
