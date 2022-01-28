@@ -6,6 +6,7 @@ import java.lang.Thread;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
+import java.io.*;
 
 class Global
 {
@@ -55,7 +56,7 @@ class Thready extends Thread
 
 class coolSieve
 {
-	public static void main(String[] args)
+	public static void main(String[] args) throws FileNotFoundException
 	{
         long sum = 0;
 		int max = 100000000;
@@ -126,9 +127,12 @@ class coolSieve
             }
         }
 
+        PrintStream stream = new PrintStream(new File("primes.txt"));
+        System.setOut(stream);
         long endTime = System.currentTimeMillis();
         long duration = (endTime - startTime);
         System.out.println(duration + "ms  " + count + " " + sum);
+
         for (int i : lastTen)
         {
             System.out.println(i);
