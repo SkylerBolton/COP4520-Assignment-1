@@ -9,4 +9,4 @@ ALGORITHM: This file adapts the Sieve of Eratosthenes to use multithreading. It 
 
 EFFICIENCY: The algorithm is slightly faster when multithreaded compared to when not: concurrently, the algorithm takes ~1800-1900 ms. Multithreaded, it takes ~1600-1700 ms. 
 
-CORRECTNESS: The number of primes is slightly incorrect. 5761360 is what my program outputs, but it should be 5761479 (119 more). As a result of the missing primes, the sum is also slightly off. The final ten primes printed are correct, as are the primes that I did find.
+CORRECTNESS: The number of primes is slightly incorrect. 5761455 is what my program outputs, but it should be 5761479 (24 more). As a result of the missing primes, the sum is also slightly off. The final ten primes printed are correct, as are the primes that I did find.
