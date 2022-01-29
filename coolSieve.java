@@ -11,7 +11,6 @@ import java.io.*;
 class Global
 {
     public static boolean sieve[] = new boolean[100000001];
-    public static AtomicLong count = new AtomicLong(0);
 }
 
 // Structure of classes adapted from geeksforgeeks.org.
@@ -21,7 +20,7 @@ class Thready extends Thread
 {
 	// Constructor. n specificies the ceiling of this thread's range.
     // Start is what element this thread starts from.
-	int n;
+    int n;
     int start;
 	CountDownLatch cd;
     public Thready(int n, int start, CountDownLatch cd)
@@ -39,14 +38,13 @@ class Thready extends Thread
 		int max = 100000000;
 
         // Each thread checks only within the range it is given.
-        for (int p = this.start; (p * p <= max) && p <= this.n; p++)
+        for (long p = this.start; (p * p <= max) && p <= this.n; p++)
         {
-            if (Global.sieve[p] == true)
+            if (Global.sieve[(int)p] == true)
             {
-                Global.count.getAndIncrement();
-                for (int i = p * p; i <= max && i >= 0; i += p)
+                for (long i = p * p; i <= max && i >= 0; i += p)
 				{
-                    Global.sieve[i] = false;
+                    Global.sieve[(int)i] = false;
 				}
             }
         }
@@ -60,8 +58,6 @@ class coolSieve
 	{
         long sum = 0;
 		int max = 100000000;
-		int threads = 8;
-		int portion = max / 8;
         int count = 0;
         CountDownLatch cd = new CountDownLatch(8);
         long startTime = System.currentTimeMillis();
@@ -106,7 +102,7 @@ class coolSieve
 		}
 
 		// Print primes using sieve[], and track the sum
-        for (int i = 2; i < max; i++)
+        for (int i = 2; i <= max; i++)
         {
             if (Global.sieve[i])
             {
