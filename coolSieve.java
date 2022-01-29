@@ -70,6 +70,8 @@ class coolSieve
 
         // Spawn the threads and give them their portion of the array.
         // This is very ugly.
+        // Structured like this so I could fiddle with the values manually,
+        // and ended up keeping what I found to work better than a simple n/8 split
         Thready foopy = new Thready(100, 2, cd);
         foopy.start();
 
