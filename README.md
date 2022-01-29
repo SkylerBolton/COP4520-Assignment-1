@@ -1,7 +1,9 @@
 # COP4520-Assignment-1
 RUNNING: 
   javac coolSieve.java
+  
   java coolSieve
+  
 This will print output to primes.txt.
 
 
